@@ -2,18 +2,19 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/tursodatabase/libsql-client-go/libsql"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
 type Blog struct {
-	ID      int
-	Title   string
-	Content string
+	ID      int    `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
 }
 
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
@@ -51,9 +52,14 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		fmt.Println("Error during rows iteration:", err)
 	}
 
+	blogsJSON, err := json.Marshal(blogs)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal blogs: %v", err)
+	}
+
 	return &events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       blogs,
+		Body:       string(blogsJSON),
 	}, nil
 }
 
