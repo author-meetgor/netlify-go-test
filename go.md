@@ -1,3 +1,3 @@
 module github.com/author-meetgor/netlify-golang-test
 
-go 1.23.3
+go 1.19
