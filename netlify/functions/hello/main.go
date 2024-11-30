@@ -8,11 +8,10 @@ import (
 func Handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
     return &events.APIGatewayProxyResponse{
         StatusCode: 200,
-        Body: "Hello World!",
+        Body: "Hello, Gophers!",
     }, nil
 }
 
 func main() {
-    // Initiate AWS Lambda handler
     lambda.Start(Handler)
 }
